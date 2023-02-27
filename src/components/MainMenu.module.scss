@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Mynerve&display=swap');
+@import "../index.scss";
+
+.navBar
+{
+    position: fixed;
+    height: 100px;
+    width: 100vw;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+.logo
+{
+    width:20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Mynerve', cursive;
+    margin-left: 10px;
+
+    img
+    {
+        width:30%;
+    }
+
+    a
+    {
+        text-decoration: none;
+        color:#000000;
+        // background-color: blue;
+        display: flex;
+        align-items: center;
+    }
+}
+
+
+.menu ul
+{
+    margin-right: 10px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    li
+    {
+        list-style-type: none;
+        margin-right: 15px;
+        font-size: 20px;
+    }
+
+    a
+    {
+        text-decoration: none;
+    color: rgb(0, 0, 0);
+    }
+    a.active
+    {
+        color:$base-text;
+        background-color: $base-color;
+        padding: 10px;
+        border-radius: 10px;
+    }
+}
