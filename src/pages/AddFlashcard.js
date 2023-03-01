@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react'
 import classes from "./AddFlashcard.module.scss"
 import { useDispatch, useSelector } from 'react-redux'
 import { flashcardActions } from '../store/flashcard-slice'
+import FlashcardThumbnail from '../components/FlashcardThumbnail'
 
 const AddFlashcard = () => {
 
@@ -11,20 +12,52 @@ const data = useSelector(state=>state.flashcard.items)
 const titleRef = useRef()
 const contentRef = useRef()
 const newFolderRef = useRef()
+const currentItems = useSelector(state=> state.flashcard.items)
 
 //need to check if any folder exists
 
-// useEffect(()=>
-// {
-//     console.log(data)
-// }, [data])
+useEffect(()=>
+    {
+        const getFlashcard = async () =>
+        {
+            const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards.json")
+            
+            const data = await response.json()
+
+            for(let keys in data)
+            {
+                if(currentItems.length <=0)
+                {
+                    dispatch(flashcardActions.addFlashcard({title:data[keys].title, content: data[keys].content, newFolderName: data[keys].folder, id: data[keys].id}))
+                }
+            }
+        }
+        getFlashcard()
+    }, [])
 
 //made it async function which send http
-const sendData = () =>
+const sendData = async (dataObj) =>
 {
-    console.log(data)
-}
+    console.log(dataObj)
 
+    try
+    {
+        const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards.json",
+        {
+            method: "POST",
+            body: JSON.stringify({title: dataObj.title, content: dataObj.content, folder: dataObj.newFolderName, id: dataObj.id})
+        })
+        if(!response.ok)
+        {
+            throw new Error("Sending data error")
+        }
+    }
+    catch(error)
+    {
+        console.log(error.message)
+    }
+
+}
 
 const folderChooseHandler = (e) =>
 {
@@ -39,27 +72,26 @@ const addNewFlashcardHandler = (e) =>
     const title = titleRef.current.value;
     const content = contentRef.current.value;
     const newFolderName = newFolderRef.current.value;
+    const id = Math.random()*10000
 
-    dispatch(flashcardActions.addFlashcard({title, content, newFolderName}))
+    if(title && content)
+    {
+        dispatch(flashcardActions.addFlashcard({title, content, newFolderName, id: id}))
 
-    sendData();
+        sendData({title, content, newFolderName, id: id});
+    }
 }
-//wonder if redux is really needed...nevermind
-//review info about memo and usecallback
 
-//first get items from server when loaded and put it to store
-//then when added it can check if folder exist 
-//then useSelector and add whole store to database
-
-
-//need to change css and throw everything in div positioning absolute and then add form window, flashcard window etc...
   return (
     <div className={classes.addFlashMainWindow}>
         <div className={classes.addCardFormWindow}>
         <h1>Add new flashcard</h1>
             <form onSubmit={addNewFlashcardHandler}>
-                <select onChange={folderChooseHandler}>
-                    <option>Folder</option>
+                <select ref = {newFolderRef} onChange={folderChooseHandler}>
+                    {data.map(item=>
+                    {
+                        return <option>{item.folderName}</option>
+                    })}
                     <option>+New Folder</option>
                 </select>
                 {isNewFolder ? <input type="text" placeholder='Folder Name' ref={newFolderRef}></input>: null}
@@ -70,14 +102,15 @@ const addNewFlashcardHandler = (e) =>
         </div>
 
         <div className={classes.flashcardList}>
+                    <h1>Recently added flashcards</h1>
                     {data.map(item =>
                     {
                         return (<>
-                            <b>{item.folderName}</b>
+                            <b key = {item.id}>{item.folderName}</b>
                             <ul>
                                 {item.folderContent.map(folderItem =>
                                 {
-                                    return <li>{folderItem.title}</li>
+                                    return <FlashcardThumbnail key = {folderItem.id} id={folderItem.id} title={folderItem.title}/>
                                 })}
 
                             </ul>

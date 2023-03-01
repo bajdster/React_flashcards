@@ -1,0 +1,39 @@
+@import "../index.scss";
+@import "../pages/AddFlashcard.module.scss";
+
+.thumbnailItem
+{
+    border: 4px solid #fdfdfd;
+    background-color: $base-color;
+    border-radius: 10px;;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    width:30%;
+    min-height: 151px;
+    padding: 10px;
+    @include flexCenter;
+    flex-direction: column;
+    justify-content: space-around;
+    position: relative;
+
+    &:hover
+    {
+        cursor: pointer;
+        border: 4px solid rgb(100, 98, 98)
+    }
+
+
+    .readMoreContainer
+    {
+        width:50%;
+        height: 20%;
+        @include flexCenter;
+        position: absolute;
+        bottom: 10px;
+        img
+        {
+            width:50%;
+            height: 100%;
+        }
+    }   
+}
