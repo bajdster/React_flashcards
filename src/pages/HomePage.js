@@ -14,6 +14,8 @@ const HomePage = () => {
     const [filteredFlashCardItems, setFilteredFlashcardItems] = useState([])
     const [currentFlashcard,setCurrentFlashcard] = useState()
     let flashItemsArr = [];
+    const [folderFilter, setFolderFilter] = useState("All")
+    const [typeFilter, setTypeFilter] = useState("All")
 
     useEffect(()=>
     {
@@ -47,6 +49,11 @@ const HomePage = () => {
         drawFlashcard(filteredFlashCardItems)
     }, [filteredFlashCardItems, flashcardItems])
 
+    useEffect(()=>
+    {
+        filterFolderHandler();
+    },[folderFilter, typeFilter])
+
     const drawFlashcard = (filteredItems) =>
     {
         const range = filteredItems.length
@@ -67,40 +74,86 @@ const HomePage = () => {
     }
 
     //need to think how to filter by 2 different types 
-    const filterFolderHandler = (e) =>
+    //still something is wrong
+    const filterFolderHandler = () =>
     {
+        // let filteredItems;
+        // if(e.target.value === "All")
+        // {
+        //     filteredItems = flashcardItems
+        // }
+        // else
+        // {
+        //     filteredItems = flashcardItems.filter((item, index) =>
+        //         {
+        //             if(item.folder === e.target.value)
+        //             {
+        //                 return item
+        //             }
+        //         })
+                
+        //         console.log(filteredItems)    
+        // }
+        // setFilteredFlashcardItems(filteredItems)
         let filteredItems;
-        if(e.target.value === "All")
+        if(folderFilter === "All")
         {
             filteredItems = flashcardItems
         }
-        else
+        else 
         {
             filteredItems = flashcardItems.filter((item, index) =>
                 {
-                    if(item.folder === e.target.value)
+                    if(item.folder === folderFilter)
                     {
                         return item
                     }
                 })
-                
-                console.log(filteredItems)    
         }
+        console.log(filteredItems)
+
+        if(typeFilter === "All")
+        {
+           filteredItems = filteredItems
+        }
+        else 
+        {
+            //something wrong in here
+            ///!!! - tyoeFilter great letter actionType small letter :)
+            filteredItems = filteredItems.filter(item=>
+                {
+                    if(item.actionType === typeFilter.toLowerCase())
+                    {
+                        return item
+                    }
+                })
+        }
+
+        console.log(filteredItems)
+
         setFilteredFlashcardItems(filteredItems)
-        // drawFlashcard(filteredItems)
+    }
+
+    const setFolderHandler = (e) =>
+    {
+        setFolderFilter(e.target.value)
+    }
+    const setTypeHandler = (e) =>
+    {
+        setTypeFilter(e.target.value)
     }
 
     return (
     <div className={classes.homePagePage}>
         <div className={classes.mainPageFilter}>
-            <select onChange={filterFolderHandler}>
+            <select onChange={setFolderHandler}>
                 <option>All</option>
                 {currentItems.map(item=>
                             {
                                 return <option>{item.folderName}</option>
                             })}
             </select>
-            <select>
+            <select onChange={setTypeHandler}>
                 <option>All</option>
                 <option>Learned</option>
                 <option>Repeat</option>
@@ -125,13 +178,13 @@ const HomePage = () => {
         <div className={classes.actionButtons}>
             <div className={classes.actionButton} onClick={()=>
             {
-                checkHandler("correct")
+                checkHandler("learned")
             }}>
                 <img src={correct} alt="correct icon"></img>
             </div>
             <div className={classes.actionButton} onClick={()=>
             {
-                checkHandler("refresh")
+                checkHandler("repeat")
             }}>
                 <img src={refresh} alt="refresh icon"></img>
             </div>
