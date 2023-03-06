@@ -11,6 +11,7 @@ const HomePage = () => {
     const dispatch = useDispatch()
     const currentItems = useSelector(state=> state.flashcard.items)
     const [flashcardItems, setFlashcardItems] = useState([])
+    const [filteredFlashCardItems, setFilteredFlashcardItems] = useState([])
     const [currentFlashcard,setCurrentFlashcard] = useState()
     let flashItemsArr = [];
 
@@ -33,34 +34,66 @@ const HomePage = () => {
             }
 
             setFlashcardItems(flashItemsArr)
+            setFilteredFlashcardItems(flashItemsArr)
 
         }
         getFlashcard()
 
     }, [])
 
+    //initial show the random flashcard from all, works when items are loaded
     useEffect(()=>
     {
-        drawFlashcard()
-    }, [flashcardItems])
+        drawFlashcard(filteredFlashCardItems)
+    }, [filteredFlashCardItems, flashcardItems])
 
-
-    //code way to filter items and to control actions on them
-
-    const drawFlashcard = () =>
+    const drawFlashcard = (filteredItems) =>
     {
-        console.log("Elo")
-        const range = flashcardItems.length
+        const range = filteredItems.length
         const randomNum = Math.floor(Math.random()* range)
-        const randomFlashcard = flashcardItems[randomNum]
+        const randomFlashcard = filteredItems[randomNum]
         console.log(range)
         setCurrentFlashcard(randomFlashcard)
+    }
+
+    const checkHandler = (actionType)=>
+    {
+        const tempItemsArr = [...flashcardItems]
+        let searchedItem = tempItemsArr.find(item=> item.id === currentFlashcard.id)
+
+        searchedItem.actionType = actionType
+
+        setFlashcardItems(tempItemsArr)
+    }
+
+    //need to think how to filter by 2 different types 
+    const filterFolderHandler = (e) =>
+    {
+        let filteredItems;
+        if(e.target.value === "All")
+        {
+            filteredItems = flashcardItems
+        }
+        else
+        {
+            filteredItems = flashcardItems.filter((item, index) =>
+                {
+                    if(item.folder === e.target.value)
+                    {
+                        return item
+                    }
+                })
+                
+                console.log(filteredItems)    
+        }
+        setFilteredFlashcardItems(filteredItems)
+        // drawFlashcard(filteredItems)
     }
 
     return (
     <div className={classes.homePagePage}>
         <div className={classes.mainPageFilter}>
-            <select>
+            <select onChange={filterFolderHandler}>
                 <option>All</option>
                 {currentItems.map(item=>
                             {
@@ -71,6 +104,7 @@ const HomePage = () => {
                 <option>All</option>
                 <option>Learned</option>
                 <option>Repeat</option>
+                <option>Wrong</option>
             </select>
             {/* <ul>
                 {flashcardItems.map(item =>
@@ -89,13 +123,22 @@ const HomePage = () => {
         </div>
 
         <div className={classes.actionButtons}>
-            <div className={classes.actionButton} onClick={drawFlashcard}>
+            <div className={classes.actionButton} onClick={()=>
+            {
+                checkHandler("correct")
+            }}>
                 <img src={correct} alt="correct icon"></img>
             </div>
-            <div className={classes.actionButton}>
+            <div className={classes.actionButton} onClick={()=>
+            {
+                checkHandler("refresh")
+            }}>
                 <img src={refresh} alt="refresh icon"></img>
             </div>
-            <div className={classes.actionButton}>
+            <div className={classes.actionButton} onClick={()=>
+            {
+                checkHandler("wrong")
+            }}>
                 <img src={wrong} alt="wrong icon"></img>
             </div>
         </div>
