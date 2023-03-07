@@ -64,13 +64,52 @@
 
 }
 
+//need to check how it works
 .flashCardCard
 {
     margin-top: 50px;
     margin-bottom: 30px;
-    width:100%;
-    height: 50vh;
-    background-color: $base-white;
+    width:500px;
+    height: 300px;
+    // background-color: $base-white;
+    background-color: transparent;
     border-radius: 10px;
     @include flexCenter;
+    perspective: 1000px;
+   
+
+    .flashCardInner
+    {
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        width:100%;
+        height: 100%;
+        position: relative;
+    }
+
+    &:hover .flashCardInner
+    {
+        transform: rotateY(180deg);
+    }
+
+    .flashCardFront, .flashCardBack
+    {
+        backface-visibility: hidden;
+        width:100%;
+        height: 100%;
+        background-color: $base-white;
+        position: absolute;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        padding: 15px;
+    }
+
+    .flashCardBack
+    {
+        transform: rotateY(180deg);
+    }
+
 }

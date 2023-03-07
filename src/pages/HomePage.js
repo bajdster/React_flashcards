@@ -24,10 +24,11 @@ const HomePage = () => {
             const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards.json")
             
             const data = await response.json()
+            console.log(data)
 
             for(let keys in data)
             {
-                flashItemsArr.push({title: data[keys].title, content: data[keys].content, folder: data[keys].folder, id: data[keys].id})
+                flashItemsArr.push({title: data[keys].title, content: data[keys].content, folder: data[keys].folder, id: data[keys].id, name: keys, actionType: data[keys].actionType})
 
                 if(currentItems.length <=0)
                 {
@@ -46,6 +47,7 @@ const HomePage = () => {
     //initial show the random flashcard from all, works when items are loaded
     useEffect(()=>
     {
+        console.log(flashcardItems)
         drawFlashcard(filteredFlashCardItems)
     }, [filteredFlashCardItems, flashcardItems])
 
@@ -63,38 +65,30 @@ const HomePage = () => {
         setCurrentFlashcard(randomFlashcard)
     }
 
-    const checkHandler = (actionType)=>
+    const checkHandler = async (actionType)=>
     {
         const tempItemsArr = [...flashcardItems]
         let searchedItem = tempItemsArr.find(item=> item.id === currentFlashcard.id)
 
         searchedItem.actionType = actionType
 
+        const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards/"+searchedItem.name+".json",
+        {
+            method: "PATCH",
+            body: JSON.stringify({actionType: searchedItem.actionType})
+        })
+
+        const data = await response.json()
+
+        console.log(data)
+
         setFlashcardItems(tempItemsArr)
+        //Patch method ???
+        //I think its success!
     }
 
-    //need to think how to filter by 2 different types 
-    //still something is wrong
     const filterFolderHandler = () =>
     {
-        // let filteredItems;
-        // if(e.target.value === "All")
-        // {
-        //     filteredItems = flashcardItems
-        // }
-        // else
-        // {
-        //     filteredItems = flashcardItems.filter((item, index) =>
-        //         {
-        //             if(item.folder === e.target.value)
-        //             {
-        //                 return item
-        //             }
-        //         })
-                
-        //         console.log(filteredItems)    
-        // }
-        // setFilteredFlashcardItems(filteredItems)
         let filteredItems;
         if(folderFilter === "All")
         {
@@ -110,7 +104,6 @@ const HomePage = () => {
                     }
                 })
         }
-        console.log(filteredItems)
 
         if(typeFilter === "All")
         {
@@ -118,7 +111,6 @@ const HomePage = () => {
         }
         else 
         {
-            //something wrong in here
             ///!!! - tyoeFilter great letter actionType small letter :)
             filteredItems = filteredItems.filter(item=>
                 {
@@ -172,7 +164,14 @@ const HomePage = () => {
         </div>
 
         <div className={classes.flashCardCard}>
-            <p>{currentFlashcard && currentFlashcard.title}</p>
+            <div className={classes.flashCardInner}>
+                <div className={classes.flashCardFront}>
+                    <p>{currentFlashcard && currentFlashcard.title}</p>
+                </div>
+                <div className={classes.flashCardBack}>
+                    <p>{currentFlashcard && currentFlashcard.content}</p>
+                </div>
+            </div>
         </div>
 
         <div className={classes.actionButtons}>
