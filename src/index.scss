@@ -1,6 +1,10 @@
-$base-color: rgb(0, 2, 144);
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+$base-color: linear-gradient(90deg, rgba(0,92,108,1) 13%, rgba(7,176,205,1) 100%, rgba(52,220,255,1) 100%);
 $base-text: rgb(255, 255, 255);
 $base-white: rgb(246, 252, 255);
+$no-found-color: rgb(99, 20, 20);
+$front-page-font: 'Pacifico', cursive;
 
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 
@@ -12,5 +16,5 @@ body {
   margin: 0;
   font-family: sans-serif;
   color: #000000;
-  background-color: #0b0328;
+  background: rgb(0,92,108);
 }

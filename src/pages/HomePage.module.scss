@@ -16,7 +16,7 @@
 .mainPageFilter
 {
     
-    
+
     height: 50px;
     width: 90%;
     background-color: $base-white;
@@ -64,52 +64,13 @@
 
 }
 
-//need to check how it works
-.flashCardCard
+
+
+.noItems
 {
-    margin-top: 50px;
-    margin-bottom: 30px;
-    width:500px;
+    color:$no-found-color;
     height: 300px;
-    // background-color: $base-white;
-    background-color: transparent;
-    border-radius: 10px;
-    @include flexCenter;
-    perspective: 1000px;
-   
-
-    .flashCardInner
-    {
-        transition: transform 0.8s;
-        transform-style: preserve-3d;
-        width:100%;
-        height: 100%;
-        position: relative;
-    }
-
-    &:hover .flashCardInner
-    {
-        transform: rotateY(180deg);
-    }
-
-    .flashCardFront, .flashCardBack
-    {
-        backface-visibility: hidden;
-        width:100%;
-        height: 100%;
-        background-color: $base-white;
-        position: absolute;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        padding: 15px;
-    }
-
-    .flashCardBack
-    {
-        transform: rotateY(180deg);
-    }
-
+    margin-top: 50px;
+    font-size: 28px;
+    @include flexCenter
 }

@@ -30,7 +30,6 @@
     {
         text-decoration: none;
         color:#000000;
-        // background-color: blue;
         display: flex;
         align-items: center;
     }
@@ -60,7 +59,7 @@
     a.active
     {
         color:$base-text;
-        background-color: $base-color;
+        background: $base-color;
         padding: 10px;
         border-radius: 10px;
     }

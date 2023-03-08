@@ -5,6 +5,8 @@ import { flashcardActions } from '../store/flashcard-slice'
 import correct from "../images/correct.png"
 import wrong from "../images/wrong.png"
 import refresh from "../images/refresh.png"
+import Statistics from '../components/Statistics';
+import FlashcardCard from '../components/FlashcardCard'
 
 const HomePage = () => {
 
@@ -136,65 +138,51 @@ const HomePage = () => {
     }
 
     return (
-    <div className={classes.homePagePage}>
-        <div className={classes.mainPageFilter}>
-            <select onChange={setFolderHandler}>
-                <option>All</option>
-                {currentItems.map(item=>
-                            {
-                                return <option>{item.folderName}</option>
-                            })}
-            </select>
-            <select onChange={setTypeHandler}>
-                <option>All</option>
-                <option>Learned</option>
-                <option>Repeat</option>
-                <option>Wrong</option>
-            </select>
-            {/* <ul>
-                {flashcardItems.map(item =>
+    <>
+        <div className={classes.homePagePage}>
+            <div className={classes.mainPageFilter}>
+                <select onChange={setFolderHandler}>
+                    <option>All</option>
+                    {currentItems.map(item=>
+                                {
+                                    return <option>{item.folderName}</option>
+                                })}
+                </select>
+                <select onChange={setTypeHandler}>
+                    <option>All</option>
+                    <option>Learned</option>
+                    <option>Repeat</option>
+                    <option>Wrong</option>
+                </select>
+            </div>
+
+            {filteredFlashCardItems.length > 0 ? <FlashcardCard currentFlashcard = {currentFlashcard}/> : <div className={classes.noItems}>No items found</div>}
+
+            <div className={classes.actionButtons}>
+                <div className={classes.actionButton} onClick={()=>
                 {
-                    return (<li>{item.folder}
-                    <p>{item.title}</p>
-                    <p>{item.content}</p>
-
-                    </li>)
-                })}
-            </ul> */}
-        </div>
-
-        <div className={classes.flashCardCard}>
-            <div className={classes.flashCardInner}>
-                <div className={classes.flashCardFront}>
-                    <p>{currentFlashcard && currentFlashcard.title}</p>
+                    checkHandler("learned")
+                }}>
+                    <img src={correct} alt="correct icon"></img>
                 </div>
-                <div className={classes.flashCardBack}>
-                    <p>{currentFlashcard && currentFlashcard.content}</p>
+                <div className={classes.actionButton} onClick={()=>
+                {
+                    checkHandler("repeat")
+                }}>
+                    <img src={refresh} alt="refresh icon"></img>
+                </div>
+                <div className={classes.actionButton} onClick={()=>
+                {
+                    checkHandler("wrong")
+                }}>
+                    <img src={wrong} alt="wrong icon"></img>
                 </div>
             </div>
+
         </div>
 
-        <div className={classes.actionButtons}>
-            <div className={classes.actionButton} onClick={()=>
-            {
-                checkHandler("learned")
-            }}>
-                <img src={correct} alt="correct icon"></img>
-            </div>
-            <div className={classes.actionButton} onClick={()=>
-            {
-                checkHandler("repeat")
-            }}>
-                <img src={refresh} alt="refresh icon"></img>
-            </div>
-            <div className={classes.actionButton} onClick={()=>
-            {
-                checkHandler("wrong")
-            }}>
-                <img src={wrong} alt="wrong icon"></img>
-            </div>
-        </div>
-    </div>
+        <Statistics flashcardItems= {flashcardItems}/>
+    </>
   )
 }
 
