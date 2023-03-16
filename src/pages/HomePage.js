@@ -7,6 +7,7 @@ import wrong from "../images/wrong.png"
 import refresh from "../images/refresh.png"
 import Statistics from '../components/Statistics';
 import FlashcardCard from '../components/FlashcardCard'
+import Owl from '../components/Owl'
 
 const HomePage = () => {
 
@@ -18,6 +19,7 @@ const HomePage = () => {
     let flashItemsArr = [];
     const [folderFilter, setFolderFilter] = useState("All")
     const [typeFilter, setTypeFilter] = useState("All")
+    const [statItems, setStatItems] = useState()
 
     useEffect(()=>
     {
@@ -34,7 +36,7 @@ const HomePage = () => {
 
                 if(currentItems.length <=0)
                 {
-                    dispatch(flashcardActions.addFlashcard({title:data[keys].title, content: data[keys].content, newFolderName: data[keys].folder, id: data[keys].id}))
+                    dispatch(flashcardActions.addFlashcard({title:data[keys].title, content: data[keys].content, newFolderName: data[keys].folder, name:keys, id: data[keys].id}))
                 }
             }
 
@@ -56,7 +58,7 @@ const HomePage = () => {
     useEffect(()=>
     {
         filterFolderHandler();
-    },[folderFilter, typeFilter])
+    },[folderFilter, typeFilter, flashcardItems])
 
     const drawFlashcard = (filteredItems) =>
     {
@@ -85,8 +87,6 @@ const HomePage = () => {
         console.log(data)
 
         setFlashcardItems(tempItemsArr)
-        //Patch method ???
-        //I think its success!
     }
 
     const filterFolderHandler = () =>
@@ -106,6 +106,8 @@ const HomePage = () => {
                     }
                 })
         }
+
+        setStatItems(filteredItems)
 
         if(typeFilter === "All")
         {
@@ -139,6 +141,7 @@ const HomePage = () => {
 
     return (
     <>
+       <Owl/>
         <div className={classes.homePagePage}>
             <div className={classes.mainPageFilter}>
                 <select onChange={setFolderHandler}>
@@ -164,24 +167,26 @@ const HomePage = () => {
                     checkHandler("learned")
                 }}>
                     <img src={correct} alt="correct icon"></img>
+                    <h2>I know it</h2>
                 </div>
                 <div className={classes.actionButton} onClick={()=>
                 {
                     checkHandler("repeat")
                 }}>
                     <img src={refresh} alt="refresh icon"></img>
+                    <h2>Repeat</h2>
                 </div>
                 <div className={classes.actionButton} onClick={()=>
                 {
                     checkHandler("wrong")
                 }}>
                     <img src={wrong} alt="wrong icon"></img>
+                    <h2>I don't know</h2>
                 </div>
             </div>
-
         </div>
 
-        <Statistics flashcardItems= {flashcardItems}/>
+        <Statistics flashcardItems= {statItems}/>
     </>
   )
 }

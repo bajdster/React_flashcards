@@ -14,6 +14,7 @@ const contentRef = useRef()
 const newFolderRef = useRef()
 const currentItems = useSelector(state=> state.flashcard.items)
 
+
 //need to check if any folder exists
 
 useEffect(()=>
@@ -24,11 +25,16 @@ useEffect(()=>
             
             const data = await response.json()
 
+            if(!data)
+            {
+                setIsNewFolder(true)
+            }
+
             for(let keys in data)
             {
                 if(currentItems.length <=0)
                 {
-                    dispatch(flashcardActions.addFlashcard({title:data[keys].title, content: data[keys].content, newFolderName: data[keys].folder, id: data[keys].id}))
+                    dispatch(flashcardActions.addFlashcard({title:data[keys].title, content: data[keys].content, newFolderName: data[keys].folder, name:keys, id: data[keys].id}))
                 }
             }
         }
@@ -65,6 +71,7 @@ const folderChooseHandler = (e) =>
     setIsNewFolder(true)
     else setIsNewFolder(false)
 }
+
 
 const addNewFlashcardHandler = (e) =>
 {
@@ -110,7 +117,7 @@ const addNewFlashcardHandler = (e) =>
                             <ul>
                                 {item.folderContent.map(folderItem =>
                                 {
-                                    return <FlashcardThumbnail key = {folderItem.id} id={folderItem.id} title={folderItem.title}/>
+                                    return <FlashcardThumbnail key = {folderItem.id} id={folderItem.id} title={folderItem.title} name={folderItem.name} folder={item.folderName}/>
                                 })}
 
                             </ul>

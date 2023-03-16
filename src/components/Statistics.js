@@ -4,7 +4,7 @@ import positive from "../images/positive.png"
 import negative from "../images/negative.png"
 import neutral from "../images/neutral.png"
 
-//maybe its the time to work with RWD of elements
+//statistics should be focused on one single filter
 const Statistics = (props) => {
 
     const items = props.flashcardItems;
@@ -18,7 +18,9 @@ const Statistics = (props) => {
         let correct = 0;
         let refresh = 0;
         let incorrect = 0;
-        for(let item of items)
+        if(items)
+        {
+            for(let item of items)
         {
             if(item.actionType === "learned")
             {
@@ -33,6 +35,8 @@ const Statistics = (props) => {
                 incorrect++;
             }
         }
+        }
+        
     
         setLearned(correct);
         setRepeat(refresh);

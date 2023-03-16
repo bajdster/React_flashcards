@@ -9,7 +9,7 @@ const MainMenu = () => {
         <div className={classes.logo}>
         <Link to="/">
             <img src={fc} alt="flashcard logo"></img>
-            FlashMemo
+            Flash<span>Memo</span>
         </Link>
         </div>
         <div className={classes.menu}>

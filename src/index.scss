@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-$base-color: linear-gradient(90deg, rgba(0,92,108,1) 13%, rgba(7,176,205,1) 100%, rgba(52,220,255,1) 100%);
+$base-color: rgba(50, 0, 108, 0.775);
 $base-text: rgb(255, 255, 255);
 $base-white: rgb(246, 252, 255);
 $no-found-color: rgb(99, 20, 20);
@@ -16,5 +16,5 @@ body {
   margin: 0;
   font-family: sans-serif;
   color: #000000;
-  background: rgb(0,92,108);
+  background: $base-color;
 }

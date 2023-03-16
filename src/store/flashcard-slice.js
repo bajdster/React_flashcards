@@ -15,25 +15,53 @@ const flashcardSlice = createSlice({
             
             if(!exisitingFolder)
             {
-                state.items.push({folderName: addedItem.newFolderName, folderContent: [{title: addedItem.title, content: addedItem.content, id: addedItem.id}]})
+                state.items.push({folderName: addedItem.newFolderName, folderContent: [{title: addedItem.title, content: addedItem.content, id: addedItem.id, name:addedItem.name}]})
             }
             else
             {
-                exisitingFolder.folderContent.push({title: addedItem.title, content: addedItem.content, id: addedItem.id})
+                exisitingFolder.folderContent.push({title: addedItem.title, content: addedItem.content, id: addedItem.id, name:addedItem.name})
             }
         },
+
+        //??????????????
+        removeFlashcard(state, action)
+        {
+            const {id, folder} = action.payload
+            const actualItems = current(state.items);
+            console.log(actualItems)
+            const filteredContent = actualItems.map(item =>
+                {
+                    if(item.folderName === folder)
+                    {
+                        const filteredArray = item.folderContent.filter(content=>
+                            {
+                                return content.id !== id
+                            })
+                        if(filteredArray.length<=0) 
+                        {
+                            //
+                        }
+                        return {folderName: item.folderName, folderContent: filteredArray}
+                    }
+                    else return item;
+                })
+                
+            const searchIsAnyFolderEmpty = filteredContent.filter(item=>
+                {
+                   if(item.folderContent.length>0)
+                   {
+                    return item
+                   }
+                })
+                console.log(searchIsAnyFolderEmpty)
+            state.items = searchIsAnyFolderEmpty;
+        }
+
 
         //not easy loop
         //wtf is proxy?!
         //anoither option is to made another database which holds actiontypes and filter by it
         //using current helps with seeing state
-
-        //is it really neccesary? instead get item in homeage state and there add typeAction, and then change state of slice...
-        // triggerAction(state, action)
-        // {
-        //     const flashcard = action.payload 
-        //     console.log(flashcard)
-            
 
         //     const currentState = current(state.items)
 

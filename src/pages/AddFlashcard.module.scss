@@ -87,11 +87,11 @@
         button:hover
         {
             cursor: pointer;
-            background-color: rgb(1, 1, 88);
+            background-color: rgb(1, 71, 88);
         }
         button:active
         {
-            background-color: rgb(34, 2, 214);
+            background-color: rgb(0, 127, 142);
         }
     }
 
@@ -130,4 +130,9 @@
 
 }
 
-
+@media screen and (min-width: 900px) {
+    .addFlashMainWindow .addCardFormWindow
+    {
+        width:50%;
+    }
+}
