@@ -15,10 +15,10 @@ const newFolderRef = useRef()
 const currentItems = useSelector(state=> state.flashcard.items)
 
 
-//need to check if any folder exists
+
 
 useEffect(()=>
-    {
+    {    
         const getFlashcard = async () =>
         {
             const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards.json")
@@ -34,20 +34,22 @@ useEffect(()=>
             {
                 if(currentItems.length <=0)
                 {
+                    console.log("I'm fetching when added new item")
                     dispatch(flashcardActions.addFlashcard({title:data[keys].title, content: data[keys].content, newFolderName: data[keys].folder, name:keys, id: data[keys].id}))
                 }
             }
         }
         getFlashcard()
+ 
     }, [])
 
-//made it async function which send http
 const sendData = async (dataObj) =>
 {
     console.log(dataObj)
 
     try
     {
+        
         const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards.json",
         {
             method: "POST",
@@ -57,12 +59,19 @@ const sendData = async (dataObj) =>
         {
             throw new Error("Sending data error")
         }
+
+        const resp = await response.json();
+
+        dispatch(flashcardActions.addFlashcard({title:dataObj.title, content: dataObj.content, newFolderName: dataObj.newFolderName, name:resp.name, id: dataObj.id}))
+
+
+        //try use response to get name ??
+        //bingo
     }
     catch(error)
     {
         console.log(error.message)
     }
-
 }
 
 const folderChooseHandler = (e) =>
@@ -83,11 +92,11 @@ const addNewFlashcardHandler = (e) =>
 
     if(title && content)
     {
-        dispatch(flashcardActions.addFlashcard({title, content, newFolderName, id: id}))
-
         sendData({title, content, newFolderName, id: id});
     }
 }
+
+console.log(data)
 
   return (
     <div className={classes.addFlashMainWindow}>
@@ -117,6 +126,7 @@ const addNewFlashcardHandler = (e) =>
                             <ul>
                                 {item.folderContent.map(folderItem =>
                                 {
+                                    console.log(folderItem)
                                     return <FlashcardThumbnail key = {folderItem.id} id={folderItem.id} title={folderItem.title} name={folderItem.name} folder={item.folderName}/>
                                 })}
 

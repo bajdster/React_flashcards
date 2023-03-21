@@ -7,7 +7,6 @@ import { flashcardActions } from '../store/flashcard-slice';
 
 const FlashcardThumbnail = (props) => 
 {
-    
     const [isTNOpen, setIsTNOpen] = useState(false)
     const dispatch = useDispatch();
 
@@ -19,21 +18,14 @@ const FlashcardThumbnail = (props) =>
         })
     }
 
-
     const deleteFlashcard = async ()=>
     {
-        //something wrong because name doesnt gets there
-        //23:42 WORKS! delete from database
         const toDeleteItem = props.name;
-        console.log(toDeleteItem)
-        // let searchedItem = tempItemsArr.find(item=> item.id === currentFlashcard.id)
 
-        // searchedItem.actionType = actionType
-
-        // const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards/"+toDeleteItem+".json",
-        // {
-        //     method: "DELETE",
-        // })
+        const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards/"+toDeleteItem+".json",
+        {
+            method: "DELETE",
+        })
 
         dispatch(flashcardActions.removeFlashcard({id: props.id, folder: props.folder}))
     }
@@ -42,7 +34,7 @@ const FlashcardThumbnail = (props) =>
     let shortTitle = longTitle.slice(0,15) + "...";
 
 
-    return (<li className={classes.thumbnailItem} id={props.key} onClick={openThumbnailHandler}>
+    return (<li className={classes.thumbnailItem} id={props.id} onClick={openThumbnailHandler}>
         {isTNOpen ? longTitle : shortTitle}
         {!isTNOpen && <div className={classes.readMoreContainer}><img src={readMore} alt="Read more icon"></img></div>}
         {isTNOpen && <div className={classes.deleteButton} onClick={deleteFlashcard}>

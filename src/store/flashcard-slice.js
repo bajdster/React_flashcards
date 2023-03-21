@@ -23,7 +23,6 @@ const flashcardSlice = createSlice({
             }
         },
 
-        //??????????????
         removeFlashcard(state, action)
         {
             const {id, folder} = action.payload
@@ -53,14 +52,9 @@ const flashcardSlice = createSlice({
                     return item
                    }
                 })
-                console.log(searchIsAnyFolderEmpty)
             state.items = searchIsAnyFolderEmpty;
         }
 
-
-        //not easy loop
-        //wtf is proxy?!
-        //anoither option is to made another database which holds actiontypes and filter by it
         //using current helps with seeing state
 
         //     const currentState = current(state.items)

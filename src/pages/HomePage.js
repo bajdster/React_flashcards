@@ -115,7 +115,7 @@ const HomePage = () => {
         }
         else 
         {
-            ///!!! - tyoeFilter great letter actionType small letter :)
+            ///!!! - typeFilter great letter actionType small letter :)
             filteredItems = filteredItems.filter(item=>
                 {
                     if(item.actionType === typeFilter.toLowerCase())
