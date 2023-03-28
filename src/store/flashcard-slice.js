@@ -53,22 +53,35 @@ const flashcardSlice = createSlice({
                    }
                 })
             state.items = searchIsAnyFolderEmpty;
+        },
+
+        editFlashcard(state, action)
+        {
+            const {id, name, title, content, folder} = action.payload
+            const actualItems = (current(state.items))
+
+            const filteredItems = actualItems.map(item=>
+                {
+                    if(item.folderName === folder)
+                    {
+                        const updatedFolderContent = item.folderContent.map(folderItem=>
+                            {
+                                if(folderItem.id === id)
+                                {
+                                    return {...folderItem, title:title, content:content}
+                                    
+                                }
+                                else return folderItem
+                            })
+
+                            return {...item, folderContent:updatedFolderContent}
+                    }
+
+                    else return item
+                })
+
+                state.items = filteredItems;
         }
-
-        //using current helps with seeing state
-
-        //     const currentState = current(state.items)
-
-        //     const searched = currentState.find(item=>
-        //         {
-        //             if(item.folderName === flashcard.folder)
-        //             return item
-        //         })
-
-        //         console.log(searched)
-
-           
-        // }
 
     }
 })

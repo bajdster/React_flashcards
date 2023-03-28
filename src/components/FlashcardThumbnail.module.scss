@@ -48,7 +48,19 @@
             transform: scale(1.05);
         }
     }
+
+    .editButton
+    {
+        @extend .deleteButton;
+        left:-20px;
+        img 
+        {
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+    }
 }
+
 
 @media screen and (min-width: 900px) {
     .thumbnailItem

@@ -87,11 +87,12 @@
         button:hover
         {
             cursor: pointer;
-            background-color: rgb(1, 71, 88);
+            background-color: rgba(67, 0, 143, 0.775);
         }
         button:active
         {
-            background-color: rgb(0, 127, 142);
+            background-color: rgba(36, 0, 77, 0.775);
+;
         }
     }
 
@@ -128,6 +129,90 @@
 
     }
 
+}
+
+.modal
+{
+    width:100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.659);
+    position: absolute;
+    @include flexCenter();
+    // align-items: flex-start;
+
+    .editWindow
+    {
+        position: absolute;
+        top:300px;
+        width:600px;
+        height: 400px;
+        background-color: $base-white;
+        border-radius: 10px;
+        @include flexCenter();
+
+        form
+        {
+            width:80%;
+            height: 80%;
+            @include flexCenter();
+            flex-direction: column;
+            gap:10px;
+
+            button
+            {
+                width:80%;
+                height: 15%;
+                background-color: $base-color;
+                color: $base-text;
+                border:none;
+                border-radius: 5px;
+            }
+
+            input, textarea
+            {
+                width:100%;
+            }
+
+            input
+            {
+                font-size: 22px;
+            }
+
+            textarea
+            {
+                height: 50%;
+            }
+        }
+
+        h2
+        {
+            position: absolute;
+            top:0;
+            left:10px;
+            
+        }
+
+        .closeButton
+        {
+            position: absolute;
+            width:30px;
+            height: 30px;
+            right: 10px;
+            top:10px;
+
+            &:hover
+            {
+                cursor: pointer;
+                transform: scale(1.05);
+            }
+
+            img
+            {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
 }
 
 @media screen and (min-width: 900px) {

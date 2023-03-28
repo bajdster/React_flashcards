@@ -28,7 +28,6 @@ const HomePage = () => {
             const response = await fetch("https://flashcard-6f9f6-default-rtdb.firebaseio.com/flashcards.json")
             
             const data = await response.json()
-            console.log(data)
 
             for(let keys in data)
             {
@@ -51,8 +50,7 @@ const HomePage = () => {
     //initial show the random flashcard from all, works when items are loaded
     useEffect(()=>
     {
-        console.log(flashcardItems)
-        drawFlashcard(filteredFlashCardItems)
+        drawRandomFlashcard(filteredFlashCardItems)
     }, [filteredFlashCardItems, flashcardItems])
 
     useEffect(()=>
@@ -60,12 +58,11 @@ const HomePage = () => {
         filterFolderHandler();
     },[folderFilter, typeFilter, flashcardItems])
 
-    const drawFlashcard = (filteredItems) =>
+    const drawRandomFlashcard = (filteredItems) =>
     {
         const range = filteredItems.length
         const randomNum = Math.floor(Math.random()* range)
         const randomFlashcard = filteredItems[randomNum]
-        console.log(range)
         setCurrentFlashcard(randomFlashcard)
     }
 
@@ -83,8 +80,6 @@ const HomePage = () => {
         })
 
         const data = await response.json()
-
-        console.log(data)
 
         setFlashcardItems(tempItemsArr)
     }
@@ -125,8 +120,6 @@ const HomePage = () => {
                 })
         }
 
-        console.log(filteredItems)
-
         setFilteredFlashcardItems(filteredItems)
     }
 
@@ -148,7 +141,7 @@ const HomePage = () => {
                     <option>All</option>
                     {currentItems.map(item=>
                                 {
-                                    return <option>{item.folderName}</option>
+                                    return <option key={item.folderName}>{item.folderName}</option>
                                 })}
                 </select>
                 <select onChange={setTypeHandler}>

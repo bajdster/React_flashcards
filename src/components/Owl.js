@@ -5,7 +5,7 @@ import classes from "./Owl.module.scss"
 
 const Owl = () => {
 
-    const guides = ["Did you know, that flashcards are one of the best ways to learn?", "Don't give up you can still win", "Practice your memory everyday", "Be sure that you switch off all distractos", "You are doing great!", "I'm counting on you"]
+    const guides = ["Did you know, that flashcards are one of the best ways to learn?", "Don't give up you can still win", "Practice your memory everyday", "Be sure that you switch off all distractors", "You are doing great!", "I'm counting on you"]
 
     const owls = ["owl1" , "owl2"]
 
